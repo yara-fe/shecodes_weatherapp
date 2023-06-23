@@ -24,6 +24,7 @@ def convert_date(iso_string):
     Returns:
         A date formatted like: Weekday Date Month Year e.g. Tuesday 06 July 2021
     """
+
     #create a date object with iso_string
     date_object = datetime.strptime(iso_string, "%Y-%m-%dT%H:%M:%S%z")
 
@@ -81,8 +82,16 @@ def load_data_from_csv(csv_file):
     Returns:
         A list of lists, where each sublist is a (non-empty) line in the csv file.
     """
-    pass
+    #open the file
+    with open(csv_file, mode="r", encoding="utf-8") as weather_file:
+        csv_reader = csv.DictReader(weather_file)
 
+        #create a list to store all rows in weather_file:
+        weather_data = []
+        for row in csv_reader:
+            weather_data.append([row['date'], int(row['min']),int(row['max'])])
+        
+        return weather_data
 
 def find_min(weather_data):
     """Calculates the minimum value in a list of numbers.
@@ -158,35 +167,51 @@ def generate_summary(weather_data):
     Returns:
         A string containing the summary information.
     """
-    dates = []
-    min_temps = []
-    max_temps = []
 
-    for data in weather_data:
-        format_date = datetime.strptime(data[0], "%A %d %B %Y")
-        dates.append(format_date)
-        min_temps.append(data[1])
-        max_temps.append(data[2])
+    """
+5 Day Overview
+  The lowest temperature will be 9.4°C, and will occur on Friday 02 July 2021.
+  The highest temperature will be 20.0°C, and will occur on Saturday 03 July 2021.
+  The average low this week is 12.2°C.
+  The average high this week is 17.8°C.    
+"""
 
-    # find the minimum value
-    min_temp = min(min_temps)
-    max_temp = max(max_temps)
     
     
-    summary += f"({dates})"
-    summary += f" Minimum temperature: {min_temp}"
-    summary += f" Maximum temperature: {max_temp}"
-
-    return summary
-
-
+    # summary += f" 5 Day Overview"
+    # summary += f" The lowest temperature will be {min_temp), and will occur on {min_date}."
+    # summary += f" The highest temperature will be {max_temp), and will occur on {max_date}."
+    # summary += f" The average low this week is {low_ave_temp)."
+    # summary += f" The average high this week is {high_ave_temp)."
 
 
-"""
----- Friday 02 July 2021 ----
-  Minimum Temperature: 9.4°C
-  Maximum Temperature: 19.4°C        
-"""
+
+    # dates = []
+    # min_temps = []
+    # max_temps = []
+
+    # for data in weather_data:
+    #     format_date = datetime.strptime(data[0], "%A %d %B %Y")
+    #     dates.append(format_date)
+    #     print(format_date)
+    #     min_temps.append(data[1])
+    #     max_temps.append(data[2])
+
+    # # find the minimum value
+    # min_temp = min(min_temps)
+    # max_temp = max(max_temps)
+    
+    
+    # summary += f"({dates})"
+    # summary += f" Minimum temperature: {min_temp}"
+    # summary += f" Maximum temperature: {max_temp}"
+
+    # return summary
+
+
+
+
+
 
 def generate_daily_summary(weather_data):
     """Outputs a daily summary for the given weather data.
