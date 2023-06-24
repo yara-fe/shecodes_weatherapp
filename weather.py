@@ -44,13 +44,14 @@ def convert_f_to_c(temp_in_farenheit):
     """
     # print (type(temp_in_farenheit))
 
-    #convert input into a float
+    # convert input into a float
     temp_float = float(temp_in_farenheit)
 
-    #convert temp from F to C, round to 1 dp
-    degrees_c = round(((temp_float-32)*5/9),1)
+    # convert temp from F to C, round to 1 dp
+    temp_c = round(((temp_float-32)*5/9),1)
 
-    return degrees_c
+    # return temp in degrees C
+    return temp_c
 
 
 def calculate_mean(weather_data):
@@ -61,16 +62,18 @@ def calculate_mean(weather_data):
     Returns:
         A float representing the mean value.
     """
+
+    # Initialize a list that will store the sum of the values in the list
     sum_of_list = 0
 
-    # convert the elements within weather_data to float
+    # Convert the elements within weather_data to float
     float_weather_data = [float(i) for i in weather_data]
     
-    # get the sum of the elements
+    # Get the sum of the elements
     for i in range(len(float_weather_data)):
         sum_of_list += float_weather_data[i]
 
-    # calculate the mean 
+    # Calculate the mean 
     mean = sum_of_list/len(float_weather_data)
     return mean
 
@@ -82,7 +85,8 @@ def load_data_from_csv(csv_file):
     Returns:
         A list of lists, where each sublist is a (non-empty) line in the csv file.
     """
-    #open the file
+    # Open the file and create a dictionary.
+    # Key will be from the first row of the file so this is automatically skipped.
     with open(csv_file, mode="r", encoding="utf-8") as weather_file:
         csv_reader = csv.DictReader(weather_file)
 
@@ -233,6 +237,7 @@ def generate_daily_summary(weather_data):
     # Initialize an empty string to store the summary
     summary = ""
 
+    # loop over the data in the list and assign a variable to each element within the row
     for row in weather_data:
         date = convert_date(row[0]) #convert to readable date
         min_temp = format_temperature(convert_f_to_c(row[1])) #convert min temp to Celsius and add degreesC
