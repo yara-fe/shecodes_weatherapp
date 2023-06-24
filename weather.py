@@ -28,7 +28,7 @@ def convert_date(iso_string):
     #create a date object with iso_string
     date_object = datetime.strptime(iso_string, "%Y-%m-%dT%H:%M:%S%z")
 
-    #convert the date_object to the new format
+    #convert the date_object to the a string date
     date_new = datetime.strftime(date_object, "%A %d %B %Y")
 
     return date_new
@@ -166,18 +166,21 @@ def generate_summary(weather_data):
         A string containing the summary information.
     """
 
+    """Sample Output:
+    5 Day Overview
+    The lowest temperature will be 9.4°C, and will occur on Friday 02 July 2021.
+    The highest temperature will be 20.0°C, and will occur on Saturday 03 July 2021.
+    The average low this week is 12.2°C.
+    The average high this week is 17.8°C.    
     """
-5 Day Overview
-  The lowest temperature will be 9.4°C, and will occur on Friday 02 July 2021.
-  The highest temperature will be 20.0°C, and will occur on Saturday 03 July 2021.
-  The average low this week is 12.2°C.
-  The average high this week is 17.8°C.    
-"""
+    
+    # Initialize three lists that will store the dates, min temps and max temps
     dates = []
     min_temps = []
     max_temps = []
 
     # Get the list from the sublist
+    # Add each element to their corresponding list (i.e. put all dates into the "dates" list, min temp into "min_temps", etc)
     for row in weather_data:
         dates.append(row[0])
         min_temps.append(row[1])
@@ -189,9 +192,6 @@ def generate_summary(weather_data):
     
     # Use position to find min_date
     min_date = dates[min_temp_pos]
-
-    # print (min_temp)
-    # print (min_date_pos)
 
     # Find the highest temperature and it's position from the list.
     max_temp = find_max(max_temps)[0]
@@ -222,4 +222,26 @@ def generate_daily_summary(weather_data):
     Returns:
         A string containing the summary information.
     """
-    pass
+    # pass
+
+    ''' Sample Output:
+    ---- Friday 19 June 2020 ----
+    Minimum Temperature: 8.3°C
+    Maximum Temperature: 7.8°C
+    '''
+    
+    # Initialize an empty string to store the summary
+    summary = ""
+
+    for row in weather_data:
+        date = convert_date(row[0]) #convert to readable date
+        min_temp = format_temperature(convert_f_to_c(row[1])) #convert min temp to Celsius and add degreesC
+        max_temp = format_temperature(convert_f_to_c(row[2])) #convert max temp to Celsius and add degreesC
+
+        # Adding data to the summary
+        summary += f"---- {date} ----\n"
+        summary += f"  Minimum Temperature: {min_temp}\n"
+        summary += f"  Maximum Temperature: {max_temp}\n\n"
+
+    return(summary)
+
